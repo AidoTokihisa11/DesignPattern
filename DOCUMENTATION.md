@@ -46,7 +46,8 @@ classDiagram
     }
 
     %% --- OBSERVABLE (Radio) ---
-    interface ISubject {
+    class ISubject {
+        <<interface>>
         +attach(observer)
         +detach(observer)
         +notify(data)
@@ -60,7 +61,8 @@ classDiagram
     }
 
     %% --- OBSERVER (Auditeur) ---
-    interface IObserver {
+    class IObserver {
+        <<interface>>
         +update(data)
     }
 
@@ -70,7 +72,8 @@ classDiagram
     }
 
     %% --- STRATEGY (Themes) ---
-    interface IThemeStrategy {
+    class IThemeStrategy {
+        <<interface>>
         +getName()
         +formatEmission(emission)
     }
@@ -83,11 +86,13 @@ classDiagram
     }
 
     %% --- ITERATOR & COMPOSITE ---
-    interface ICatalogueItem {
+    class ICatalogueItem {
+        <<interface>>
         +getName()
     }
 
-    interface IIterator~T~ {
+    class IIterator~T~ {
+        <<interface>>
         +hasNext()
         +next()
     }
