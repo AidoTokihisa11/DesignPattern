@@ -1,0 +1,54 @@
+### 1. Voir le catalogue des radios
+# Cette requête récupère la liste des radios disponibles (Patterns Iterator & Façade)
+GET http://localhost:3000/radios
+
+### 2. Abonner un auditeur
+# Cette requête abonne "Theo" à la radio "Skyrock" (Pattern Observer)
+POST http://localhost:3000/subscribe
+Content-Type: application/json
+
+{
+    "auditeur": "Theo",
+    "radio": "Skyrock"
+}
+
+### 3. Abonner un autre auditeur
+# Cette requête abonne "Marie" à "Skyrock"
+POST http://localhost:3000/subscribe
+Content-Type: application/json
+
+{
+    "auditeur": "Marie",
+    "radio": "Skyrock"
+}
+
+### 4. Diffuser une émission (Declenche les notifications)
+# Simule une émission sur "Skyrock". Theo et Marie devraient voir le log dans la console du serveur.
+# (Pattern Factory crée l'objet, Observer notifie)
+POST http://localhost:3000/emit
+Content-Type: application/json
+
+{
+    "radio": "Skyrock",
+    "type": "Musique",
+    "content": "Le Top 50 de la semaine",
+    "details": {
+        "artist": "Daft Punk",
+        "duration": 240
+    }
+}
+
+### 5. Diffuser une émission de Sport sur RMC
+# Personne n'est abonné, donc pas de notification (juste le log de la radio)
+POST http://localhost:3000/emit
+Content-Type: application/json
+
+{
+    "radio": "RMC",
+    "type": "Sport",
+    "content": "But de Mbappé !",
+    "details": {
+        "match": "PSG vs OM",
+        "score": "1-0"
+    }
+}

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RadioHub Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="main-header">
+        <div style="max-width: 1600px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div>
+                <div class="logo">📻 RadioHub</div>
+                <p class="subtitle">Console d'administration et de simulation</p>
+            </div>
+            <div class="top-alert">
+                ℹ️ Les notifications internes (Observer) sont aussi visibles dans le terminal VS Code.
+            </div>
+        </div>
+    </header>
+
+    <div class="app-grid">
+        <!-- 1. CATALOGUE -->
+        <section class="card panel-catalogue">
+            <div class="card-header">
+                <h2>📚 Catalogue des Radios</h2>
+                <span class="badge" id="radio-count">0 stations</span>
+            </div>
+            <div class="card-body">
+                <div id="radio-list" class="radio-grid">
+                    <!-- Cards will be injected here -->
+                </div>
+                
+                <details class="admin-zone">
+                    <summary>🛠️ Créer une nouvelle radio</summary>
+                    <div class="input-group">
+                        <input type="text" id="new-radio-name" placeholder="Nom (ex: NRJ)">
+                        <select id="new-radio-theme">
+                            <option value="Musique">🎵 Musique</option>
+                            <option value="Sport">⚽ Sport</option>
+                            <option value="Actu">📰 Actualités</option>
+                        </select>
+                        <button class="btn-sm" onclick="createRadio()">Ajouter</button>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- 2. GESTION AUDITEURS & DIFFUSION -->
+        <div class="center-column">
+            <!-- Abonnement -->
+            <section class="card panel-actions">
+                <div class="card-header">
+                    <h2>👤 Espace Auditeur</h2>
+                </div>
+                <div class="card-body">
+                    <p class="instruction">Connectez un auditeur à une station pour recevoir les notifications.</p>
+                    <div class="form-control">
+                        <label>Nom de l'auditeur</label>
+                        <input type="text" id="auditeur-name" placeholder="Ex: Professeur" value="Professeur">
+                    </div>
+                    <div class="form-control">
+                        <label>Choisir une Radio</label>
+                        <select id="subscribe-radio-select"></select>
+                    </div>
+
+                    <!-- Zone Message Animateur (CU_7) -->
+                    <div class="message-box">
+                        <label>✉️ Contacter l'animateur</label>
+                        <div class="input-group">
+                            <input type="text" id="animator-message" placeholder="Votre message...">
+                            <button class="btn btn-accent" onclick="sendMessage()">Envoyer</button>
+                        </div>
+                    </div>
+
+                    <div class="actions-grid">
+                        <button class="btn btn-primary" onclick="subscribe()">🔔 S'abonner</button>
+                        <button class="btn btn-outline" onclick="unsubscribe()">🔕 Se désabonner</button>
+                        <button class="btn btn-outline" onclick="listen()">🎧 Écouter Radio</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Emission -->
+            <section class="card panel-broadcast">
+                <div class="card-header">
+                    <h2>📡 Studio de Diffusion</h2>
+                </div>
+                <div class="card-body">
+                    <p class="instruction">Simulez le direct pour déclencher les notifications.</p>
+                    <div class="form-control">
+                        <label>Radio Émettrice</label>
+                        <select id="emit-radio-select"></select>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-control">
+                            <label>Type</label>
+                            <select id="emit-type">
+                                <option value="Musique">🎵 Musique</option>
+                                <option value="Sport">⚽ Sport</option>
+                                <option value="Actu">📰 Actu</option>
+                            </select>
+                        </div>
+                        <div class="form-control">
+                            <label>Titre / Contenu</label>
+                            <input type="text" id="emit-content" placeholder="Ex: Infos de 20h">
+                        </div>
+                    </div>
+                    <button class="btn btn-accent full-width" onclick="emit()">🎙️ LANCER LE DIRECT</button>
+                </div>
+            </section>
+        </div>
+
+        <!-- 3. TERMINAL -->
+        <section class="card panel-terminal">
+            <div class="card-header">
+                <h2>📟 Terminal de Contrôle</h2>
+                <button class="btn-xs" onclick="clearLogs()">Effacer</button>
+            </div>
+            <div class="terminal-window" id="logs">
+                <div class="log-entry system">> Système initialisé...</div>
+                <div class="log-entry system">> En attente d'actions...</div>
+            </div>
+            <div class="terminal-footer">
+                <small>Les notifications internes (Observer) sont aussi visibles dans le terminal VS Code.</small>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
