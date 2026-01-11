@@ -2,7 +2,6 @@
 
 **Auteurs :**  
 - Théo Garcès
-- [Ajouter autres membres]
 
 ---
 
@@ -191,3 +190,10 @@ L'application expose une API REST simplifiée sur le port 3000.
 ### Améliorations possibles
 - Implémenter le pattern **Composite** plus profondément pour gérer des sous-catégories de radios (Dossier Rock -> Radios Rock).
 - Ajouter une vraie persistance (SQLite ou MongoDB).
+
+---
+
+## 4. Réflexion Critique
+### 4.0 Limitations actuelles
+- Le système ne gère pas encore la suppression dynamique de thèmes au runtime.
+- L'authentification des auditeurs est simulée (pas de login/mot de passe).

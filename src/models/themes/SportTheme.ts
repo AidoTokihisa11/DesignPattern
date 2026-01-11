@@ -5,15 +5,15 @@ export class SportTheme implements IThemeStrategy {
     getName(): string {
         return "Sport";
     }
-    formatEmission(emission: IEmission): any {
+    formatEmission(emission: IEmission): Record<string, unknown> {
         // RadioSport format: { sport, équipes, score, minute }
-        const d = emission.details;
+        // STRICT JSON COMPLIANCE (Sujet 3.4)
+        const details = emission.details;
         return {
-            source_radio: "Sport",
-            sport: d.sport || "Divers",
-            equipes: d.teams || "TBD",
-            score: d.score || "0-0",
-            temps: d.minute || "00:00"
+            sport: details.sport || "Divers",
+            équipes: details.teams || "TBD",
+            score: details.score || "0-0",
+            minute: details.minute || "00:00"
         };
     }
 }

@@ -1,4 +1,4 @@
-.\demo_script.bat.\demo_script.bat@echo off
+@echo off
 echo ==========================================
 echo      DEMO RADIOHUB - TEST AUTOMATIQUE
 echo ==========================================

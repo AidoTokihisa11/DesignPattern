@@ -2,6 +2,7 @@
 
 Projet d'agrégateur de web-radios réalisé dans le cadre du module "Design Patterns".
 
+**Dépôt GitHub :** [https://github.com/AidoTokihisa11/DesignPattern.git]
 **Date de rendu :** 11/01/2025  
 **Formation :** CDA
 
@@ -23,7 +24,7 @@ Ce projet nécessite **Node.js** installé sur votre machine.
    *Depuis un AUTRE terminal :*
    ```bash
    # Pour Git Bash (Windows) ou Linux/Mac
-   bash demo.sh
+   bash demo/demo.sh
    ```
    *Ce script simule un abonnement et une diffusion pour montrer les notifications en temps réel.*
 

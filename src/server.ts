@@ -1,10 +1,16 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import path from 'path';
 import { RadioHubFacade } from './services/RadioHubFacade';
 import { ThemeRegistry } from './services/ThemeRegistry';
 import { MusicTheme } from './models/themes/MusicTheme';
 import { SportTheme } from './models/themes/SportTheme';
 import { NewsTheme } from './models/themes/NewsTheme';
+
+enum HttpCode {
+    OK = 200,
+    BAD_REQUEST = 400,
+    SERVER_ERROR = 500
+}
 
 const app = express();
 app.use(express.json());
@@ -28,73 +34,79 @@ try {
     console.error("Error initializing radios:", e);
 }
 
+// Helper for error handling
+const handleError = (res: Response, error: unknown) => {
+    const message = error instanceof Error ? error.message : "An unknown error occurred";
+    res.status(HttpCode.BAD_REQUEST).json({ error: message });
+};
+
 // Routes
-app.get('/radios', (req, res) => {
+app.get('/radios', (_req: Request, res: Response) => {
     try {
         const radios = facade.getAllRadios();
-        res.json(radios);
-    } catch (e: any) {
-        res.status(500).json({ error: e.message });
+        res.status(HttpCode.OK).json(radios);
+    } catch (e) {
+        res.status(HttpCode.SERVER_ERROR).json({ error: e instanceof Error ? e.message : "Server Error" });
     }
 });
 
-app.post('/subscribe', (req, res) => {
+app.post('/subscribe', (req: Request, res: Response) => {
     try {
         const { auditeur, radio } = req.body;
         if (!auditeur || !radio) throw new Error("Missing 'auditeur' or 'radio' in body");
         
         facade.subscribeAuditeur(auditeur, radio);
-        res.json({ message: `${auditeur} subscribed to ${radio}` });
-    } catch (e: any) {
-        res.status(400).json({ error: e.message });
+        res.status(HttpCode.OK).json({ message: `${auditeur} subscribed to ${radio}` });
+    } catch (e) {
+        handleError(res, e);
     }
 });
 
-app.post('/unsubscribe', (req, res) => {
+app.post('/unsubscribe', (req: Request, res: Response) => {
     try {
         const { auditeur, radio } = req.body;
         if (!auditeur || !radio) throw new Error("Missing 'auditeur' or 'radio' in body");
         
         facade.unsubscribeAuditeur(auditeur, radio);
-        res.json({ message: `${auditeur} unsubscribed from ${radio}` });
-    } catch (e: any) {
-        res.status(400).json({ error: e.message });
+        res.status(HttpCode.OK).json({ message: `${auditeur} unsubscribed from ${radio}` });
+    } catch (e) {
+        handleError(res, e);
     }
 });
 
-app.post('/message', (req, res) => {
+app.post('/message', (req: Request, res: Response) => {
     try {
         const { auditeur, radio, message } = req.body;
         if (!auditeur || !radio || !message) throw new Error("Missing parameters");
         
         facade.sendAnimatorMessage(auditeur, radio, message);
-        res.json({ message: `Message sent to ${radio} animator` });
-    } catch (e: any) {
-        res.status(400).json({ error: e.message });
+        res.status(HttpCode.OK).json({ message: `Message sent to ${radio} animator` });
+    } catch (e) {
+        handleError(res, e);
     }
 });
 
-app.post('/listen', (req, res) => {
+app.post('/listen', (req: Request, res: Response) => {
     try {
         const { auditeur, radio } = req.body;
         if (!auditeur || !radio) throw new Error("Missing parameters");
         
         const data = facade.listenToRadio(auditeur, radio);
-        res.json(data);
-    } catch (e: any) {
-        res.status(400).json({ error: e.message });
+        res.status(HttpCode.OK).json(data);
+    } catch (e) {
+        handleError(res, e);
     }
 });
 
-app.post('/emit', (req, res) => {
+app.post('/emit', (req: Request, res: Response) => {
     try {
         const { radio, type, content, details } = req.body;
         if (!radio || !type || !content) throw new Error("Missing parameters");
 
         facade.emitEmission(radio, type, content, details || {});
-        res.json({ message: "Emission broadcasted successfully" });
-    } catch (e: any) {
-        res.status(400).json({ error: e.message });
+        res.status(HttpCode.OK).json({ message: "Emission broadcasted successfully" });
+    } catch (e) {
+        handleError(res, e);
     }
 });
 

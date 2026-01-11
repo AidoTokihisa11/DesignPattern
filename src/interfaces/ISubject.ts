@@ -1,7 +1,7 @@
 import { IObserver } from "./IObserver";
 
-export interface ISubject {
-    attach(observer: IObserver): void;
-    detach(observer: IObserver): void;
-    notify(data: any): void;
+export interface ISubject<T = unknown> {
+    attach(observer: IObserver<T>): void;
+    detach(observer: IObserver<T>): void;
+    notify(data: T): void;
 }

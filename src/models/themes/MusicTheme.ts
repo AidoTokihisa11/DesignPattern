@@ -5,15 +5,15 @@ export class MusicTheme implements IThemeStrategy {
     getName(): string {
         return "Musique";
     }
-    formatEmission(emission: IEmission): any {
+    formatEmission(emission: IEmission): Record<string, unknown> {
         // RadioMusicale format: { artiste, titre, album, durée }
-        const d = emission.details;
+        // STRICT JSON COMPLIANCE (Sujet 3.4)
+        const details = emission.details;
         return {
-            source_radio: "Musique",
-            artiste: d.artist || "Inconnu",
-            titre: d.title || emission.content,
-            album: d.album || "Single",
-            duree: d.duration || "0:00"
+            artiste: details.artist || "Inconnu",
+            titre: details.title || emission.content,
+            album: details.album || "Single",
+            durée: details.duration || "0:00"
         };
     }
 }

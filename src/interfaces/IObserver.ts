@@ -1,3 +1,3 @@
-export interface IObserver {
-    update(data: any): void;
+export interface IObserver<T = unknown> {
+    update(data: T): void;
 }
